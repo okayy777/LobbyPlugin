@@ -1,0 +1,30 @@
+MySQL:
+  host: okayserver.de
+  port: '3306'
+  Bandatabase: 's59_Bans'
+  Frienddatabase: 's59_Friend'
+  Playerdatabase: 's59_Player'
+  Partydatabase: 's59_Party'
+  Serverdatabase: 's59_Server'
+  Permdatabase: 's59_Permission'
+  Clandatabase: 's59_Clan'
+  Lobbydatabase: 's59_Lobbys'
+  username: ProxyNet
+  password: '4asdf869das6f8'
+  ssl: false
+
+Server:
+  name: "Lobby-1"
+  gamemode: "LOBBY"
+Prefix:
+  system: "§8〈§cSystem§8〉"
+NPC:
+  1:
+    name: "&4Güntha"
+    skin: "dxxdly"
+  2:
+    name: "&6Ralf"
+    skin: "Abfa4rt"
+  3:
+    name: "&3Schokolade"
+    skin: "Schokiilife"
