@@ -3,8 +3,7 @@ package de.ascasia.LobbySystem.NPC;
 
 
 import de.ascasia.LobbySystem.Main;
-import dev.sergiferry.playernpc.api.NPC;
-import dev.sergiferry.playernpc.api.NPCLib;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,8 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NPCs {
+    /*
 
-    public static HashMap<String , NPC.Global> NPC_List = new HashMap<>();
+    public static HashMap<String , > NPC_List = new HashMap<>();
 
     public static void createNPC(String ID , String ItemInHand , boolean Glowing ,
                                  String Glow_Color , boolean collidable , boolean ShowOnTab ,
@@ -63,6 +63,7 @@ public class NPCs {
 
     public static void syncNPCs() {
         List<String> NPC_Names = Main.getPlugin().Ldata.NPC_Names();
+        System.out.println(NPC_Names);
         if (NPC_Names != null) {
             if (NPC_Names.isEmpty()) {
                 return;
@@ -70,22 +71,26 @@ public class NPCs {
 
             if (NPC_List.isEmpty()) {
                 for (String Name : NPC_Names) {
-                    NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
-                    npc.setVisibility(NPC.Global.Visibility.EVERYONE);
-                    npc.setAutoShow(true);
-                    npc.setAutoCreate(true);
-                    npc.update();
-                    NPC_List.put(npc.getSimpleCode() , npc);
-                }
-            } else {
-                for (String Name : NPC_Names) {
-                    if (NPC_List.containsKey(Name)) {
+                    if (NPCLib.getInstance().getGlobalNPC(Main.getPlugin() , Name) == null) {
                         NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
                         npc.setVisibility(NPC.Global.Visibility.EVERYONE);
                         npc.setAutoShow(true);
                         npc.setAutoCreate(true);
                         npc.update();
-                        NPC_List.replace(npc.getSimpleCode(), npc);
+                        NPC_List.put(npc.getSimpleCode(), npc);
+                    }
+                }
+            } else {
+                for (String Name : NPC_Names) {
+                    if (NPC_List.containsKey(Name)) {
+                        if (NPCLib.getInstance().getGlobalNPC(Main.getPlugin() , Name) == null) {
+                            NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
+                            npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                            npc.setAutoShow(true);
+                            npc.setAutoCreate(true);
+                            npc.update();
+                            NPC_List.replace(npc.getSimpleCode(), npc);
+                        }
                     } else {
                         NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
                         npc.setVisibility(NPC.Global.Visibility.EVERYONE);
@@ -122,6 +127,8 @@ public class NPCs {
                 npc.isGlowing() , npc.getGlowingColor().name() , npc.isCollidable() , npc.isShowOnTabList() );
 
     }
+
+     */
 
 
 

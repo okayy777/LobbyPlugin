@@ -1,8 +1,6 @@
 package de.ascasia.LobbySystem.sql;
 
 import de.ascasia.LobbySystem.Main;
-import dev.sergiferry.playernpc.api.NPC;
-import dev.sergiferry.playernpc.api.NPCLib;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -62,13 +60,14 @@ public class LobbySQLGetter {
             while(rs.next()) {
                 Names.add(rs.getString("NAME"));
             }
+            return Names;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
-        return null;
     }
 
+    /*
     public NPC.Global getNPC(String Name) {
         try {
 
@@ -120,6 +119,8 @@ public class LobbySQLGetter {
         return null;
 
     }
+
+     */
 
 
     public void setNPC( double x , double y , double z , double pitch , double yaw , String World,

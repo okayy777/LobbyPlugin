@@ -9,7 +9,7 @@ import de.ascasia.LobbySystem.NPC.NPCs;
 import de.ascasia.LobbySystem.commands.*;
 import de.ascasia.LobbySystem.sql.*;
 import de.ascasia.LobbySystem.utils.*;
-import dev.sergiferry.playernpc.api.NPCLib;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Server;
@@ -107,7 +107,6 @@ public class Main extends JavaPlugin {
         }
 
         try {
-            NPCLib.getInstance().registerPlugin(this);
             PASQL.connect();
             BSQL.connect();
             FSQL.connect();
@@ -234,7 +233,7 @@ public class Main extends JavaPlugin {
         BukkitRunnable NPC_Sync = new BukkitRunnable() {
             @Override
             public void run() {
-                NPCs.syncNPCs();
+                //NPCs.syncNPCs();
             }
         };
         NPC_Sync.runTaskTimer(Main.getPlugin() , 20 , 120);

@@ -3,6 +3,7 @@ package de.ascasia.LobbySystem.commands;
 
 import de.ascasia.LobbySystem.Main;
 import de.ascasia.LobbySystem.NPC.NPCs;
+import de.ascasia.LobbySystem.obj.NPC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,17 +19,17 @@ public class npccommand implements CommandExecutor {
             if (sender.hasPermission("ascasia.LobbyAdmin")) {
                 Player p = (Player) sender;
                 if (args.length == 8 && args[0].equalsIgnoreCase("spawn") ) {
-                    NPCs.createNPC(args[1] , args[2] ,Boolean.parseBoolean(args[3]), args[4],Boolean.parseBoolean(args[5]),Boolean.parseBoolean(args[6]), p.getLocation() , args[7]);
+                    NPC.createNPC( p.getLocation() ,args[1] , args[2] ,Boolean.parseBoolean(args[3]), args[4],Boolean.parseBoolean(args[5]),Boolean.parseBoolean(args[6]) , args[7]);
                 }
                 else if (args.length > 2 && args[0].equalsIgnoreCase("text")) {
                     StringBuilder text = new StringBuilder();
                     for (int x = 2 ; x < args.length ; x++) {
                         text.append( " " +args[x]);
                     }
-                    NPCs.changeText(args[1], text.toString());
+                    //NPCs.changeText(args[1], text.toString());
                 }
                 else if ( args.length == 2 && args[0].equalsIgnoreCase("upload")) {
-                    NPCs.uploadNPC(args[1]);
+                    //NPCs.uploadNPC(args[1]);
                 }
             }
         }

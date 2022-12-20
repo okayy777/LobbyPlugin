@@ -2,7 +2,6 @@ package de.ascasia.LobbySystem.NPC;
 
 import de.ascasia.LobbySystem.Items.Item;
 import de.ascasia.LobbySystem.Main;
-import dev.sergiferry.playernpc.api.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,6 +20,7 @@ import java.util.List;
 public class NPCevent implements Listener {
 
     public Item ItemGetter = Main.getPlugin().item;
+    /*
 
     @EventHandler
     public void onNPCInteract(NPC.Events.Interact e) {
@@ -78,4 +78,6 @@ public class NPCevent implements Listener {
         }
 
     }
+
+     */
 }
