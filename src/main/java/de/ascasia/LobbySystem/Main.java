@@ -126,13 +126,6 @@ public class Main extends JavaPlugin {
             Ldata.createLobbyTable();
             Ldata.createSichtbarTable();
             Ldata.createCompassTable();
-            for (int x = 0 ; x < 20 ; x++) {
-                if (Ldata.NumExists(x)) {
-                    String[] data = Ldata.npc_string_data(x);
-                    double[] data2 = Ldata.npc_double_data(x);
-                    //NPC.getNPC(data[0] , data[2], data[3] ,data[1] , data2[0], data2[1], data2[2], data2[3], data2[4]);
-                }
-            }
         }
         if (ServerSQL.ServerIsConnected()) {
             if (Main.getPlugin().getConfig().getString("Server.name").contains("00")) {
@@ -237,6 +230,14 @@ public class Main extends JavaPlugin {
             }
         };
         ColorLoop.runTaskTimer(Main.getPlugin() , 40 , 5);
+
+        BukkitRunnable NPC_Sync = new BukkitRunnable() {
+            @Override
+            public void run() {
+                NPCs.syncNPCs();
+            }
+        };
+        NPC_Sync.runTaskTimer(Main.getPlugin() , 20 , 120);
 
 
     }

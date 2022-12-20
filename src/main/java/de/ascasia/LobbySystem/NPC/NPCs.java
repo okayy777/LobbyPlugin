@@ -18,7 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class NPCs {
+
+    public static HashMap<String , NPC.Global> NPC_List = new HashMap<>();
 
     public static void createNPC(String ID , String ItemInHand , boolean Glowing ,
                                  String Glow_Color , boolean collidable , boolean ShowOnTab ,
@@ -51,8 +56,43 @@ public class NPCs {
 
     }
 
-    public static void syncNPC() {
+    public static void syncNPCs() {
+        List<String> NPC_Names = Main.getPlugin().Ldata.NPC_Names();
+        if (NPC_Names != null) {
+            if (NPC_Names.isEmpty()) {
+                return;
+            }
 
+            if (NPC_List.isEmpty()) {
+                for (String Name : NPC_Names) {
+                    NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
+                    npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                    npc.update();
+                    NPC_List.put(npc.getSimpleCode() , npc);
+                }
+            } else {
+                for (String Name : NPC_Names) {
+                    if (NPC_List.containsKey(Name)) {
+                        NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
+                        npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                        npc.update();
+                        NPC_List.replace(npc.getSimpleCode(), npc);
+                    } else {
+                        NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
+                        npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                        npc.update();
+                        NPC_List.put(npc.getSimpleCode(), npc);
+                    }
+                }
+                for (String Name : NPC_List.keySet()) {
+                    if (!NPC_Names.contains(Name)) {
+                        NPC_List.get(Name).destroy();
+                        NPC_List.get(Name).update();
+                        NPC_List.remove(Name);
+                    }
+                }
+            }
+        }
     }
 
     public static void removeNPC(String ID) {
