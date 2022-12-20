@@ -29,7 +29,7 @@ public class LobbySQLGetter {
         try {
         PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS npc_list (NAME VARCHAR(20) , X DOUBLE" +
                 " , Y DOUBLE , Z DOUBLE , PITCH DOUBLE , YAW DOUBLE, WORLD VARCHAR(100) , " +
-                "GLOW BOOLEAN , GLOW_COLOR VARCHAR(20) , SHOWONTAB BOOLEAN , COLLIDABLE BOOLEAN ,TEXT VARCHAR(1000) , SKIN VARCHAR(1000), ITEMINHAND VARCHAR(30) PRIMARY KEY (NAME))");
+                "GLOW BOOLEAN , GLOW_COLOR VARCHAR(20) , SHOWONTAB BOOLEAN , COLLIDABLE BOOLEAN ,TEXT VARCHAR(1000) , SKIN VARCHAR(1000), ITEMINHAND VARCHAR(30), PRIMARY KEY (NAME))");
         ps.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -125,7 +125,7 @@ public class LobbySQLGetter {
     public void setNPC( double x , double y , double z , double pitch , double yaw , String World,
                         String Name , String Text, String Skin , boolean Glow , String GlowColor , boolean collidable , boolean ShowOnTab) {
         try {
-            PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("INSERT INTO npc_list (X,Y,Z,PITCH,YAW,WORLD,NAME,SKIN,TEXT,GLOW,GLOW_COLOR,SHOWONTAB,COLLIDABLE) values (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("INSERT INTO npc_list (X,Y,Z,PITCH,YAW,WORLD,NAME,SKIN,TEXT,GLOW,GLOW_COLOR,SHOWONTAB,COLLIDABLE) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             if (!NameExists(Name)) {
                 ps.setDouble(1, x);
                 ps.setDouble(2, y);

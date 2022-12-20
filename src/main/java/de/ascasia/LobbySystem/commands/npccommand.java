@@ -32,6 +32,9 @@ public class npccommand implements CommandExecutor {
                 }
             }
         }
+
+        // /npc spawn dev empty true RED true false IhrKleinerTeddy
+        // /npc text dev Dev-Server
         return false;
     }
 

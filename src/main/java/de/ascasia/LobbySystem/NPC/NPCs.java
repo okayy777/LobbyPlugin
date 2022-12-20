@@ -32,7 +32,7 @@ public class NPCs {
         NPC.Global npc = NPCLib.getInstance().generateGlobalNPC(Main.getPlugin() , ID  , position );
         npc.setSkin(SkinName , minecraft -> npc.update());
         npc.setCustomData("SkinName" , SkinName);
-        npc.setTextAlignment(new Vector(position.getX() , position.getY()+2 , position.getZ()));
+        //npc.setTextAlignment();
         npc.setTextOpacity(NPC.Hologram.Opacity.FULL);
         ChatColor col = ChatColor.valueOf(Glow_Color);
         npc.setGlowing(Glowing , col);
@@ -51,8 +51,13 @@ public class NPCs {
 
     public static void changeText(String ID , String Text) {
         NPC.Global npc = NPCLib.getInstance().getGlobalNPC(Main.getPlugin() , ID);
-        npc.setText(Text);
+        ChatColor col = ChatColor.WHITE;
+        if (npc.isGlowing()) {
+            col = npc.getGlowingColor().getChatColor();
+        }
+        npc.setText(col + Text);
         npc.updateText();
+        npc.update();
 
     }
 
@@ -67,6 +72,8 @@ public class NPCs {
                 for (String Name : NPC_Names) {
                     NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
                     npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                    npc.setAutoShow(true);
+                    npc.setAutoCreate(true);
                     npc.update();
                     NPC_List.put(npc.getSimpleCode() , npc);
                 }
@@ -75,11 +82,15 @@ public class NPCs {
                     if (NPC_List.containsKey(Name)) {
                         NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
                         npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                        npc.setAutoShow(true);
+                        npc.setAutoCreate(true);
                         npc.update();
                         NPC_List.replace(npc.getSimpleCode(), npc);
                     } else {
                         NPC.Global npc = Main.getPlugin().Ldata.getNPC(Name);
                         npc.setVisibility(NPC.Global.Visibility.EVERYONE);
+                        npc.setAutoShow(true);
+                        npc.setAutoCreate(true);
                         npc.update();
                         NPC_List.put(npc.getSimpleCode(), npc);
                     }
