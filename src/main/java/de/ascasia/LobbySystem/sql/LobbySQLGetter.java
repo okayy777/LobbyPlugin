@@ -13,6 +13,8 @@ import org.bukkit.util.Vector;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LobbySQLGetter {
 
@@ -50,6 +52,21 @@ public class LobbySQLGetter {
             return false;
         }
         return false;
+    }
+
+    public List<String> NPC_Names() {
+        try {
+            PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("SELECT NAME FROM npc_list");
+            ResultSet rs = ps.executeQuery();
+            List<String> Names = new ArrayList<>();
+            while(rs.next()) {
+                Names.add(rs.getString("NAME"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
     }
 
     public NPC.Global getNPC(String Name) {
