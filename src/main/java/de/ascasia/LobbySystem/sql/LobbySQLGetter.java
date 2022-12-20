@@ -1,6 +1,14 @@
 package de.ascasia.LobbySystem.sql;
 
 import de.ascasia.LobbySystem.Main;
+import dev.sergiferry.playernpc.api.NPC;
+import dev.sergiferry.playernpc.api.NPCLib;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +27,7 @@ public class LobbySQLGetter {
         try {
         PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS npc_list (NAME VARCHAR(20) , X DOUBLE" +
                 " , Y DOUBLE , Z DOUBLE , PITCH DOUBLE , YAW DOUBLE, WORLD VARCHAR(100) , " +
-                "GLOW BOOLEAN , GLOW_COLOR VARCHAR(20) , SHOWONTAB BOOLEAN , COLLIDABLE BOOLEAN ,TEXT VARCHAR(1000) , SKIN VARCHAR(1000), PRIMARY KEY (NAME))");
+                "GLOW BOOLEAN , GLOW_COLOR VARCHAR(20) , SHOWONTAB BOOLEAN , COLLIDABLE BOOLEAN ,TEXT VARCHAR(1000) , SKIN VARCHAR(1000), ITEMINHAND VARCHAR(30) PRIMARY KEY (NAME))");
         ps.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -37,7 +45,6 @@ public class LobbySQLGetter {
             while(rs.next()) {
                 return true;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -45,28 +52,9 @@ public class LobbySQLGetter {
         return false;
     }
 
-    public String[] npc_string_data(String Name) {
+    public NPC.Global getNPC(String Name) {
         try {
-            PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("SELECT * FROM npc_list WHERE NAME=?");
-            ps.setString(1 , Name);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                String World = rs.getString("WORLD");
-                String Text = rs.getString("TEXT");
-                String TEXTURE = rs.getString("SKIN");
-                String GLOWCOLOR = rs.getString("GLOW_COLOR");
-                return new String[]  {World, Text, TEXTURE, GLOWCOLOR};
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public double[] npc_double_data(String Name) {
-        try {
             PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("SELECT * FROM npc_list WHERE NAME=?");
             ps.setString(1 , Name);
             ResultSet rs = ps.executeQuery();
@@ -76,34 +64,66 @@ public class LobbySQLGetter {
                 double Z = rs.getDouble("Z");
                 double PITCH = rs.getDouble("PITCH");
                 double YAW = rs.getDouble("YAW");
-                return new double[]  {X,Y,Z,PITCH,YAW};
+                String World = rs.getString("WORLD");
+                Location position = new Location(Bukkit.getWorld(World) , X, Y ,Z, (float) YAW,(float) PITCH);
+                String Text = rs.getString("TEXT");
+                String SkinName = rs.getString("SKIN");
+                String ItemInHand = rs.getString("ITEMINHAND");
+                boolean Glow = rs.getBoolean("GLOW");
+                String Glow_Color = "empty";
+                if (Glow) {
+                    Glow_Color = rs.getString("GLOW_COLOR");
+                }
+                boolean collidable = rs.getBoolean("COLLIDABLE");
+                boolean ShowOnTab = rs.getBoolean("SHOWONTAB");
+
+                NPC.Global npc = NPCLib.getInstance().generateGlobalNPC(Main.getPlugin() , Name  , position );
+                npc.setSkin(SkinName , minecraft -> npc.update());
+                npc.setTextAlignment(new Vector(position.getX() , position.getY()+2 , position.getZ()));
+                npc.setTextOpacity(NPC.Hologram.Opacity.FULL);
+                ChatColor col = ChatColor.valueOf(Glow_Color);
+                npc.setGlowing(Glow , col);
+                npc.setPose(NPC.Pose.STANDING);
+                npc.setCollidable(collidable);
+                npc.setInteractCooldown(40);
+                npc.setShowOnTabList(ShowOnTab);
+                npc.setGazeTrackingType(NPC.GazeTrackingType.NONE);
+                if (!ItemInHand.equalsIgnoreCase("empty")) {
+                    ItemStack item = new ItemStack(Material.getMaterial(ItemInHand));
+                    npc.setItem(NPC.Slot.MAINHAND, item);
+                }
+                npc.update();
+                npc.setVisibility(NPC.Global.Visibility.SELECTED_PLAYERS);
+                return npc;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
+
     }
+
 
     public void setNPC( double x , double y , double z , double pitch , double yaw , String World,
                         String Name , String Text, String Skin , boolean Glow , String GlowColor , boolean collidable , boolean ShowOnTab) {
         try {
-            PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("INSERT INTO npc_list (NUMBER,X,Y,Z,PITCH,YAW,WORLD,NAME,TEXTURE,SIGNATURE) values (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = plugin.LSQL.getConnection().prepareStatement("INSERT INTO npc_list (X,Y,Z,PITCH,YAW,WORLD,NAME,SKIN,TEXT,GLOW,GLOW_COLOR,SHOWONTAB,COLLIDABLE) values (?,?,?,?,?,?,?,?,?,?)");
             if (!NameExists(Name)) {
-                ps.setInt(1, a);
-                ps.setDouble(2, x);
-                ps.setDouble(3, y);
-                ps.setDouble(4, z);
-                ps.setDouble(5, pitch);
-                ps.setDouble(6, yaw);
-                ps.setString(7 , World);
-                ps.setString(8 , Name);
-                ps.setString(9 , texture);
-                ps.setString(10 , signature);
+                ps.setDouble(1, x);
+                ps.setDouble(2, y);
+                ps.setDouble(3, z);
+                ps.setDouble(4, pitch);
+                ps.setDouble(5, yaw);
+                ps.setString(6 , World);
+                ps.setString(7 , Name);
+                ps.setString(8 , Skin);
+                ps.setString(9, Text);
+                ps.setBoolean(10 , Glow);
+                ps.setString(11, GlowColor);
+                ps.setBoolean(12 , ShowOnTab);
+                ps.setBoolean(13 , collidable);
                 ps.executeUpdate();
-
-
             }
 
         } catch (SQLException e) {
