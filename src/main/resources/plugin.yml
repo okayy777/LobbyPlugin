@@ -4,6 +4,7 @@ main: de.ascasia.LobbySystem.Main
 api-version: 1.19
 prefix: LobbySystem
 authors: [ okay ]
+depend: [ ProtocolLib ]
 commands:
   npc:
     description:

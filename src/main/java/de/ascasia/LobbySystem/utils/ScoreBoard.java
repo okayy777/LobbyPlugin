@@ -1,9 +1,12 @@
 package de.ascasia.LobbySystem.utils;
 
 import de.ascasia.LobbySystem.Main;
+import de.ascasia.LobbySystem.obj.NPC;
 import de.ascasia.LobbySystem.sql.*;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
@@ -69,6 +72,8 @@ public class ScoreBoard {
         o = board.registerNewObjective( uuid+ "_Side", "dummy");
         o.setDisplayName("   §b§lOKAY §f§lNETWORK   ");
         o.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        Team NPCs = board.registerNewTeam("NPCs");
         Team friends = board.registerNewTeam("f");
         friends.setPrefix("");
         friends.setSuffix("");
@@ -146,6 +151,7 @@ public class ScoreBoard {
     }
 
 
+    @SuppressWarnings("deprecation")
     public void update(Player p) {
         FileConfiguration config = Main.getPlugin().getConfig();
 

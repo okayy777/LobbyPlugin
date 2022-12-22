@@ -49,6 +49,7 @@ public class InventoryClick implements Listener {
                 break;
             }
             String uuid = p.getUniqueId().toString().replace("-", "");
+
             //Bukkit.broadcastMessage(String.valueOf(e.getSlot()));
 
             //Bukkit.broadcastMessage(InvTitle);
@@ -403,7 +404,9 @@ public class InventoryClick implements Listener {
                     }
                 }
             }
-            e.setCancelled(true);
+            if (!p.getGameMode().equals(GameMode.CREATIVE)) {
+                e.setCancelled(true);
+            }
 
         }
 

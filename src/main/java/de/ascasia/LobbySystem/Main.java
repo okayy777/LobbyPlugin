@@ -7,13 +7,18 @@ import de.ascasia.LobbySystem.Listener.*;
 import de.ascasia.LobbySystem.NPC.NPCevent;
 import de.ascasia.LobbySystem.NPC.NPCs;
 import de.ascasia.LobbySystem.commands.*;
+import de.ascasia.LobbySystem.obj.NPC;
 import de.ascasia.LobbySystem.sql.*;
 import de.ascasia.LobbySystem.utils.*;
 
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -166,6 +171,11 @@ public class Main extends JavaPlugin {
 
         }
         World w = Bukkit.getWorld("world");
+        w.getEntities().forEach(e -> {
+            if (e.getType().equals(EntityType.ARMOR_STAND) || e.getType().equals(EntityType.VILLAGER)) {
+                e.remove();
+            }
+        });
         Server s = Bukkit.getServer();
         w.setDifficulty(Difficulty.PEACEFUL);
         w.setPVP(false);
@@ -180,7 +190,6 @@ public class Main extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new onJoin(), this);
         pluginManager.registerEvents(new onQuit(), this);
-        pluginManager.registerEvents(new ClickNPC(), this);
         pluginManager.registerEvents(new PlayerMove(), this);
         pluginManager.registerEvents(new onMessage(), this);
         pluginManager.registerEvents(new SignRightClick(), this);
@@ -233,7 +242,7 @@ public class Main extends JavaPlugin {
         BukkitRunnable NPC_Sync = new BukkitRunnable() {
             @Override
             public void run() {
-                //NPCs.syncNPCs();
+
             }
         };
         NPC_Sync.runTaskTimer(Main.getPlugin() , 20 , 120);
@@ -242,6 +251,9 @@ public class Main extends JavaPlugin {
     }
 
     public void onDisable() {
+        NPC.NPC_List.forEach((s, npc) -> {
+            npc.deleteHologram();
+        });
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
