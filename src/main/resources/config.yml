@@ -1,6 +1,6 @@
 MySQL:
-  host: okayserver.de
-  port: '3306'
+  host: 
+  port: ''
   Bandatabase: 's59_Bans'
   Frienddatabase: 's59_Friend'
   Playerdatabase: 's59_Player'
@@ -10,7 +10,7 @@ MySQL:
   Clandatabase: 's59_Clan'
   Lobbydatabase: 's59_Lobbys'
   username: ProxyNet
-  password: '4asdf869das6f8'
+  password: ''
   ssl: false
 
 Server:
